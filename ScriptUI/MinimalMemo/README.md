@@ -6,7 +6,7 @@
 
 ## Dependencies
 
-- KIKAKU.UIBuilder 2.0.0
+- [KIKAKU.UIBuilder 2.0.0](https://github.com/atarabi/AfterEffects-Scripts/tree/master/Startup/KikakuUIBuilder)
 
 ## Version
 
