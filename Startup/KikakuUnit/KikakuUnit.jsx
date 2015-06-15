@@ -30,7 +30,7 @@ var KIKAKU = KIKAKU || function(fn) {
     }
     
     var test = new Test(name, hooks, tests);
-    test.run();
+    return test.run();
   };
   
   function Test(name, hooks, tests) {
@@ -87,6 +87,8 @@ var KIKAKU = KIKAKU || function(fn) {
     hooks.after.call(context);
     
     $.writeln('------- ' + name + ' finished: ' + passed + ' / ' + total + (exception ? ' (Exception: ' + exception + ')' : '') + ' -------');
+	
+    return passed === total;
   };
   
   function Assert(name) {
