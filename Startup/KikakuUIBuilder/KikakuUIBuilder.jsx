@@ -2333,16 +2333,10 @@ var KIKAKU = KIKAKU || function(fn) {
     file_name += '.' + this._file_type;
     this._file_manager.delete(file_name);
   };
-
+  
   /*
-   * UIBuilder
+   * API
    */
-  UIBuilder.PARAMETERS_KEY = '__parameters__';
-
-  UIBuilder.SPACING_SIZE = 2;
-
-  UIBuilder.MARGINS_SIZE = 5;
-
   function API() {
     var args = Array.prototype.slice.call(arguments);
     if (args.length < 2) {
@@ -2359,8 +2353,12 @@ var KIKAKU = KIKAKU || function(fn) {
 
   API.Scripts = {};
   
-  API.exist = function (script) {
-    return !!API.Scripts[script];
+  API.has = function (script, name) {
+    if (name) {
+      return API.Scripts[script] && !!API.Scripts[script][name];
+    } else {
+      return !!API.Scripts[script];
+    }
   };
 
   API.add = function (script, name, fn, ctx) {
@@ -2378,6 +2376,15 @@ var KIKAKU = KIKAKU || function(fn) {
       delete API.Scripts[script];
     }
   };
+
+  /*
+   * UIBuilder
+   */
+  UIBuilder.PARAMETERS_KEY = '__parameters__';
+
+  UIBuilder.SPACING_SIZE = 2;
+
+  UIBuilder.MARGINS_SIZE = 5;
 
   UIBuilder.prototype._initialize = function(global, name, options) {
     if (!isString(name) || name === '') {
@@ -2610,16 +2617,26 @@ var KIKAKU = KIKAKU || function(fn) {
   }
 
   function enable(name) {
-    this._validateParameter(name);
+    var self = this, 
+      args = Array.prototype.slice.call(arguments);
+    
+    forEach(args, function (name) {
+      self._validateParameter(name);
+      self._parameters[name].enable();
+    });
 
-    this._parameters[name].enable();
     return this;
   }
 
   function disable(name) {
-    this._validateParameter(name);
-
-    this._parameters[name].disable();
+    var self = this, 
+      args = Array.prototype.slice.call(arguments);
+    
+    forEach(args, function (name) {
+      self._validateParameter(name);
+      self._parameters[name].disable();
+    });
+    
     return this;
   }
 
