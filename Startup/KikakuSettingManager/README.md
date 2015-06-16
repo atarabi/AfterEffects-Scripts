@@ -13,7 +13,7 @@ setting_manager.delete('Test');
 
 ## Dependencies
 
-- KIKAKU.JSON
+- [KIKAKU.JSON](https://github.com/atarabi/AfterEffects-Scripts/tree/master/Startup/KikakuJSON)
 
 ## Version
 
