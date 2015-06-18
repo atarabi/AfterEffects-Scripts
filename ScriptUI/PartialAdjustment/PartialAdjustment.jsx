@@ -1,5 +1,5 @@
 ﻿/*
- *  PartialAdjustment v0.0.0 / ScriptUI
+ *  PartialAdjustment v0.0.1 / ScriptUI
  *
  *  Author: Kareobana(http://atarabi.com/)
  *  License: MIT
@@ -69,23 +69,29 @@
     } catch (e) {
       return;
     }
+  
+    delete comment[key];
 
-    delete layer[key];
-
-    var only_comment = true;
+    var has_key = false,
+      only_comment = true;
     for (var k in comment) {
+      has_key = true;
       if (k !== 'comment') {
         only_comment = false;
         break;
       }
     }
-
-    layer.comment = only_comment ? comment.comment : JSON.stringify(comment);
+  
+    if (!has_key) {
+      layer.comment = '';
+    } else {
+      layer.comment = only_comment ? comment.comment : JSON.stringify(comment);
+    }
   }
   
   //Main
   var builder = new UIBuilder(global, 'PartialAdjustment', {
-    version: '0.0.0',
+    version: '0.0.1',
     author: 'Kareobana',
     url: 'http://atarabi.com/'
   });
@@ -207,7 +213,7 @@
     forEach(layers, function (layer, i) {
       var expression = expression_template.replace('#{LayerName}', layer.name);
       var target_layer = target_comp.layer(i + 1);
-      removeComment(layer, script_name);
+      removeComment(target_layer, script_name);
       if (do_transform) {
         forEachPropertyGroup(target_layer.transform, function (property) {
           if (isHiddenProperty(property) || !property.canSetExpression) {
