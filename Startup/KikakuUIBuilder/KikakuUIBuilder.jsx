@@ -1,5 +1,5 @@
 /*
- *  KikakuUIBuilder v2.0.0
+ *  KikakuUIBuilder v2.0.1
  * 
  *  Author: Kareobana (http://atarabi.com/)
  *  License: MIT
@@ -30,9 +30,41 @@ var KIKAKU = KIKAKU || function(fn) {
 
   UIBuilder.LIBRARY_NAME = 'KikakuUIBuilder';
   
-  UIBuilder.VERSION = '2.0.0';
+  UIBuilder.VERSION = '2.0.1';
   
   UIBuilder.AUTHOR = 'Kareobana';
+  
+  UIBuilder.PARAMETER_TYPE = {
+    HEADING: 'heading',
+    SEPARATOR: 'separator',
+    SPACE: 'space',
+    PANEL: 'panel',
+    PANEL_END: 'panelend',
+    TEXT: 'text',
+    TEXTS: 'texts',
+    TEXTAREA: 'textarea',
+    TEXTAREAS: 'textareas',
+    STATICTEXT: 'statictext',
+    STATICTEXTS: 'statictexts',
+    NUMBER: 'number',
+    NUMBERS: 'numbers',
+    SLIDER: 'slider',
+    POINT: 'point',
+    POINT3D: 'point3d',
+    FILE: 'file',
+    FOLDER: 'folder',
+    CHECKBOX: 'checkbox',
+    CHECKBOXES: 'checkboxes',
+    RADIOBUTTON: 'radiobutton',
+    COLOR: 'color',
+    COLORS: 'colors',
+    POPUP: 'popup',
+    POPUPS: 'popups',
+    LISTBOX: 'listbox',
+    LISTBOXES: 'listboxes',
+    SCRIPT: 'script',
+    HELP: 'help',
+  };
 
   UIBuilder.API = API;
 
