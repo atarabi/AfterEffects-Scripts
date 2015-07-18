@@ -62,7 +62,7 @@ declare module KIKAKU {
 		getAuthor(): string;
 		getUrl(): string;
 		
-		add(type: any, name: string, value?: any, options?: any): UIBuilder;
+		add(type: string | UIBuilder.PARAMETER_TYPE, name: string, value?: any, options?: any): UIBuilder;
 
 		api(name: string, fn: Function): UIBuilder;
 		
