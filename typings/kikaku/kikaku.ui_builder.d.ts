@@ -39,7 +39,7 @@ declare module KIKAKU {
 		static VERSION: string;
 		static AUTHOR: string;
 		static API: {
-			(script: string, name: string, ...args): boolean;
+			(script: string, name: string, ...args): any;
 			has(script: string, name: string): boolean;
 		};
 		
