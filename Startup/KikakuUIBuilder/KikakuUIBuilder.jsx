@@ -1,5 +1,5 @@
 /*
- *  KikakuUIBuilder v2.0.1
+ *  KikakuUIBuilder v2.1.0
  * 
  *  Author: Kareobana (http://atarabi.com/)
  *  License: MIT
@@ -30,7 +30,7 @@ var KIKAKU = KIKAKU || function(fn) {
 
   UIBuilder.LIBRARY_NAME = 'KikakuUIBuilder';
   
-  UIBuilder.VERSION = '2.0.1';
+  UIBuilder.VERSION = '2.1.0';
   
   UIBuilder.AUTHOR = 'Kareobana';
   
@@ -64,6 +64,7 @@ var KIKAKU = KIKAKU || function(fn) {
     LISTBOXES: 'listboxes',
     SCRIPT: 'script',
     HELP: 'help',
+    CUSTOM: 'custom'
   };
 
   UIBuilder.API = API;
@@ -2486,6 +2487,34 @@ var KIKAKU = KIKAKU || function(fn) {
   }
 
   //parameter
+  var PARAMETER_TYPE = UIBuilder.PARAMETER_TYPE;
+  var PARAMETER_OPTIONAL_METHODS = [
+    'init',
+    'get',
+    'set',
+    'execute',
+    'enable',
+    'disable',
+    'getItems',
+    'addItems',
+    'removeItem',
+    'replaceItems',
+  ];
+  
+  function addNoop(parameter) {
+    forEach(PARAMETER_OPTIONAL_METHODS, function (method) {
+      if (!isFunction(parameter[method])) {
+        parameter[method] = noop;
+      }
+    });
+    
+    if (!isFunction(parameter.toJSON)) {
+      parameter.toJSON = function () {
+        return {};
+      };
+    }
+  }
+  
   function add(type, name, value, options) {
     if (this._is_build()) {
       throw new Error('Has been built');
@@ -2498,99 +2527,99 @@ var KIKAKU = KIKAKU || function(fn) {
     }
 
     switch (type) {
-      case 'heading':
+      case PARAMETER_TYPE.HEADING:
         this._parameters[name] = new HeadingParameter(name, value, options);
         break;
-      case 'separator':
+      case PARAMETER_TYPE.SEPARATOR:
         this._parameters[name] = new SeparatorParameter(name, value, options);
         break;
-      case 'space':
+      case PARAMETER_TYPE.SPACE:
         this._parameters[name] = new SpaceParameter(name, value, options);
         break;
-      case 'panel':
+      case PARAMETER_TYPE.PANEL:
         this._parameters[name] = new PanelParameter(name, value, options);
         this._layer++;
         if (this._options.width < this._layer * 2 * (UIBuilder.SPACING_SIZE + UIBuilder.MARGINS_SIZE)) {
           throw new Error('Too many panels');
         }
         break;
-      case 'panelend':
+      case PARAMETER_TYPE.PANEL_END:
         this._parameters[name] = new PanelEndParameter(name, value, options);
         this._layer--;
         if (this._layer < 0) {
           throw new Error('Too many panelends');
         }
         break;
-      case 'text':
+      case PARAMETER_TYPE.TEXT:
         this._parameters[name] = new TextParameter(name, value, options);
         break;
-      case 'texts':
+      case PARAMETER_TYPE.TEXTS:
         this._parameters[name] = new TextsParameter(name, value, options);
         break;
-      case 'textarea':
+      case PARAMETER_TYPE.TEXTAREA:
         this._parameters[name] = new TextAreaParameter(name, value, options);
         break;
-      case 'textareas':
+      case PARAMETER_TYPE.TEXTAREAS:
         this._parameters[name] = new TextAreasParameter(name, value, options);
         break;
-      case 'statictext':
+      case PARAMETER_TYPE.STATICTEXT:
         this._parameters[name] = new StaticTextParameter(name, value, options);
         break;
-      case 'statictexts':
+      case PARAMETER_TYPE.STATICTEXTS:
         this._parameters[name] = new StaticTextsParameter(name, value, options);
         break;
-      case 'number':
+      case PARAMETER_TYPE.NUMBER:
         this._parameters[name] = new NumberParameter(name, value, options);
         break;
-      case 'numbers':
+      case PARAMETER_TYPE.NUMBERS:
         this._parameters[name] = new NumbersParameter(name, value, options);
         break;
-      case 'slider':
+      case PARAMETER_TYPE.SLIDER:
         this._parameters[name] = new SliderParameter(name, value, options);
         break;
-      case 'point':
+      case PARAMETER_TYPE.POINT:
         this._parameters[name] = new PointParameter(name, value, options);
         break;
-      case 'point3d':
+      case PARAMETER_TYPE.POINT3D:
         this._parameters[name] = new Point3dParameter(name, value, options);
         break;
-      case 'file':
+      case PARAMETER_TYPE.FILE:
         this._parameters[name] = new FileParameter(name, value, options);
         break;
-      case 'folder':
+      case PARAMETER_TYPE.FOLDER:
         this._parameters[name] = new FolderParameter(name, value, options);
         break;
-      case 'checkbox':
+      case PARAMETER_TYPE.CHECKBOX:
         this._parameters[name] = new CheckboxParameter(name, value, options);
         break;
-      case 'checkboxes':
+      case PARAMETER_TYPE.CHECKBOXES:
         this._parameters[name] = new CheckboxesParameter(name, value, options);
         break;
-      case 'radiobutton':
+      case PARAMETER_TYPE.RADIOBUTTON:
         this._parameters[name] = new RadiobuttonParameter(name, value, options);
         break;
-      case 'color':
+      case PARAMETER_TYPE.COLOR:
         this._parameters[name] = new ColorParameter(name, value, options);
         break;
-      case 'colors':
+      case PARAMETER_TYPE.COLORS:
         this._parameters[name] = new ColorsParameter(name, value, options);
         break;
-      case 'popup':
+      case PARAMETER_TYPE.POPUP:
         this._parameters[name] = new PopupParameter(name, value, options);
         break;
-      case 'popups':
+      case PARAMETER_TYPE.POPUPS:
         this._parameters[name] = new PopupsParameter(name, value, options);
         break;
-      case 'listbox':
+      case PARAMETER_TYPE.LISTBOX:
         this._parameters[name] = new ListboxParameter(name, value, options);
         break;
-      case 'listboxes':
+      case PARAMETER_TYPE.LISTBOXES:
         this._parameters[name] = new ListboxesParameter(name, value, options);
         break;
-      case 'script':
+      case PARAMETER_TYPE.SCRIPT:
         this._parameters[name] = new Script(name, value, options);
         break;
-      case 'help':
+      case PARAMETER_TYPE.HELP:
         if (this._help) {
           throw new Error('Help has been defined');
         }
@@ -2598,6 +2627,13 @@ var KIKAKU = KIKAKU || function(fn) {
           throw new Error('Invalid help value');
         }
         this._help = new Help(name, value);
+        break;
+      case PARAMETER_TYPE.CUSTOM:
+        if (!isFunction(value)) {
+          throw new Error('"value" must be function');
+        }
+        this._parameters[name] = new value(options);
+        addNoop(this._parameters[name]);
         break;
       default:
         throw new Error('Invalid type: ' + type);
@@ -2628,7 +2664,7 @@ var KIKAKU = KIKAKU || function(fn) {
       throw new Error('Invalid name: ' + name);
     }
   };
-
+  
   function get_(name, index) {
     this._validateParameter(name);
 

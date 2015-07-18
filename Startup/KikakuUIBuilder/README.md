@@ -432,5 +432,5 @@ KIKAKU.UIBuilder.API('API Test', 'set', 'This is text.');
 
 ## Version
 
-- v2.0.1 PARAMETER_TYPEの追加
+- v2.1.0 PARAMETER_TYPE, Custom Parameterの追加
 - v2.0.0

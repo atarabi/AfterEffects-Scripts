@@ -1,3 +1,5 @@
+/// <reference path="../aftereffects/ae.d.ts" />
+
 declare module KIKAKU {
 	
 	module UIBuilder {
@@ -30,7 +32,27 @@ declare module KIKAKU {
 		    LISTBOX,
 		    LISTBOXES,
 		    SCRIPT,
-		    HELP
+		    HELP,
+			CUSTOM
+		}
+		
+		export interface CustomParameter {
+			getHeight(): number;
+			build(group: Group, builder: UIBuilder): void;
+			init?(obj?: any): void;
+			get?(): any;
+			set?(value: any): void;
+			execute?(undo?: boolean): void;
+			enable?(): void;
+			disable?(): void;
+			getItems?(): string[];
+			addItems?(item: string | string[]): void;
+			removeItem?(item: string): void;
+			replaceItems?(items: string | string[]): void;
+			toJSON?(): {
+				value?: any;
+				items?: string[];
+			};
 		}
 	}
 	
