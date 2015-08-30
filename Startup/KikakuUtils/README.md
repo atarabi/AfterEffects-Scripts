@@ -23,4 +23,5 @@
 
 ## Version
 
+- v1.0.1 Fixed hslToRgb
 - v1.0.0

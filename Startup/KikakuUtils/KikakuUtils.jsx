@@ -1,5 +1,5 @@
-/*
- *  KikakuUtils v1.0.0
+﻿/*
+ *  KikakuUtils v1.0.1
  *
  *  Author: Kareobana (http://atarabi.com/)
  *  License: MIT
@@ -21,7 +21,7 @@ var KIKAKU = KIKAKU || function(fn) {
    */
   var Utils = {};
 
-  Utils.VERSION = '1.0.0';
+  Utils.VERSION = '1.0.1';
   Utils.AUTHOR = 'Kareobana';
 
   //utility
@@ -1798,7 +1798,7 @@ var KIKAKU = KIKAKU || function(fn) {
       r, g, b;
 
     if (s === 0) {
-      r = g = b = 1;
+      r = g = b = l;
     } else {
       var q = l < 0.5 ? l * (1 + s) : l + s - l * s,
         p = 2 * l - q;
