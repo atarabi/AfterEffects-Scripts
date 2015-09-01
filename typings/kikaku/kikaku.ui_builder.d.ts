@@ -1,9 +1,9 @@
 /// <reference path="../aftereffects/ae.d.ts" />
 
-declare module KIKAKU {
+declare namespace KIKAKU {
 	
-	module UIBuilder {
-		enum PARAMETER_TYPE {
+	namespace UIBuilder {
+		export enum PARAMETER_TYPE {
 			HEADING,
 		    SEPARATOR,
 		    SPACE,

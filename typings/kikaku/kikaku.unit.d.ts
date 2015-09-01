@@ -1,4 +1,4 @@
-declare module KIKAKU {
+declare namespace KIKAKU {
 	
 	export class Unit {
 		static test(name: string, tests: {

@@ -1,4 +1,4 @@
-declare module KIKAKU {
+declare namespace KIKAKU {
 	
 	export class SettingManager {
 		static VERSION: string;

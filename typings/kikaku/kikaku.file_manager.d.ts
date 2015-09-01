@@ -1,4 +1,4 @@
-declare module KIKAKU {
+declare namespace KIKAKU {
 	
 	export class FileManager {
 		static VERSION: string;
