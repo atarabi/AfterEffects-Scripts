@@ -1,6 +1,6 @@
 /// <reference path="../aftereffects/ae.d.ts" />
 
-declare module KIKAKU.Utils {
+declare namespace KIKAKU.Utils {
 	
 	export var VERSION: string;
 	export var AUTHOR: string;
@@ -63,12 +63,12 @@ declare module KIKAKU.Utils {
 	
 	export function createLayerFilter(filters?: any): Function;
 	
-	export function getLayers(fn: Function | any, comp?: CompItem): Layer[];
-	export function getLayer(fn: Function | any, comp?: CompItem): Layer | void;
+	export function getLayers(fn?: Function | any, comp?: CompItem): Layer[];
+	export function getLayer(fn?: Function | any, comp?: CompItem): Layer | void;
 	export function getLayerByName(name: string, comp?: CompItem): Layer | void;
 	
-	export function selectLayers(fn: Function | any, comp?: CompItem, deselect?: boolean): boolean;
-	export function selectLayer(fn: Function | any, comp?: CompItem, deselect?: boolean): boolean;
+	export function selectLayers(fn?: Function | any, comp?: CompItem, deselect?: boolean): boolean;
+	export function selectLayer(fn?: Function | any, comp?: CompItem, deselect?: boolean): boolean;
 	export function deselectLayers(comp?: CompItem): void;
 
 	export function getSelectedLayers(comp?: CompItem): Layer[];
@@ -81,8 +81,10 @@ declare module KIKAKU.Utils {
 	
 	export function createPropertyFilter(filters?: any): Function;
 	
-	export function getSelectedProperties(withLayer: boolean, options?: {multiple?: boolean, propertyGroup?: boolean, filter?: Function}): PropertyBase[];
-	export function getSelectedProperty(withLayer: boolean): PropertyBase | void;
+	export function getSelectedProperties(options?: {multiple?: boolean, propertyGroup?: boolean, filter?: Function}): PropertyBase[];
+	export function getSelectedPropertiesWithLayer(options?: {multiple?: boolean, propertyGroup?: boolean, filter?: Function}): {layer: Layer; properties: PropertyBase[]}[];
+	export function getSelectedProperty(): PropertyBase | void;
+	export function getSelectedPropertyWithLayer(): {layer: Layer; property: PropertyBase;} | void;
 	export function getPathOfProperty(property: PropertyBase, type?: string): string[];
 	export function getPathOfSelectedProperty(type?: string): PropertyBase | void;
 	export function getPropertyFromPath(layer: Layer, path: (string | number)[]): void;

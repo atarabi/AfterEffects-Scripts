@@ -23,5 +23,6 @@
 
 ## Version
 
+- v1.1.0 Modified getSelectedProperties and getSelectedProperty. Added getSelectedPropertiesWithLayer and getSelectedPropertyWithLayer.
 - v1.0.1 Fixed hslToRgb
 - v1.0.0

@@ -1,5 +1,5 @@
 ﻿/*
- *  KikakuUtils v1.0.1
+ *  KikakuUtils v1.1.0
  *
  *  Author: Kareobana (http://atarabi.com/)
  *  License: MIT
@@ -21,7 +21,7 @@ var KIKAKU = KIKAKU || function(fn) {
    */
   var Utils = {};
 
-  Utils.VERSION = '1.0.1';
+  Utils.VERSION = '1.1.0';
   Utils.AUTHOR = 'Kareobana';
 
   //utility
@@ -100,7 +100,9 @@ var KIKAKU = KIKAKU || function(fn) {
   Utils.createPropertyFilter = createPropertyFilter;
 
   Utils.getSelectedProperties = getSelectedProperties;
+  Utils.getSelectedPropertiesWithLayer = getSelectedPropertiesWithLayer;
   Utils.getSelectedProperty = getSelectedProperty;
+  Utils.getSelectedPropertyWithLayer = getSelectedPropertyWithLayer;
   Utils.getPathOfProperty = getPathOfProperty;
   Utils.getPathOfSelectedProperty = getPathOfSelectedProperty;
   Utils.getPropertyFromPath = getPropertyFromPath;
@@ -1602,7 +1604,7 @@ var KIKAKU = KIKAKU || function(fn) {
     return and(fns);
   }
 
-  function getSelectedProperties(with_layer, options) {
+  function getSelectedProperties(options) {
     if (isUndefined(options) || isObject(options)) {
       options = extend({
         multiple: true,
@@ -1635,38 +1637,85 @@ var KIKAKU = KIKAKU || function(fn) {
     }
 
     var result = [];
-
-    if (with_layer) {
-      forEach(layers, function(layer) {
-        var selected_properties = layer.selectedProperties.slice(),
-          properties = [];
-        forEach(selected_properties, function(selected_property) {
-          if ((options.propertyGroup || isProperty(selected_property)) && options.filter(selected_property)) {
-            properties.push(selected_property);
-          }
-        });
-        if (properties.length > 0) {
-          result.push({
-            layer: layer,
-            properties: properties
-          });
+    forEach(layers, function(layer) {
+      var selected_properties = layer.selectedProperties.slice();
+      forEach(selected_properties, function(selected_property) {
+        if ((options.propertyGroup || isProperty(selected_property)) && options.filter(selected_property)) {
+          result.push(selected_property);
         }
       });
-    } else {
-      forEach(layers, function(layer) {
-        var selected_properties = layer.selectedProperties.slice();
-        forEach(selected_properties, function(selected_property) {
-          if ((options.propertyGroup || isProperty(selected_property)) && options.filter(selected_property)) {
-            result.push(selected_property);
-          }
-        });
-      });
+    });
+
+    return result;
+  }
+  
+  function getSelectedPropertiesWithLayer(options) {
+    if (isUndefined(options) || isObject(options)) {
+      options = extend({
+        multiple: true,
+        propertyGroup: false,
+        filter: function() {
+          return true;
+        }
+      }, options);
+    } else if (isArray(options) || isString(options)) {
+      options = {
+        multiple: true,
+        propertyGroup: true,
+        filter: createPropertyFilter(options)
+      };
+    } else if (isFunction(options)) {
+      options = {
+        multiple: true,
+        propertyGroup: true,
+        filter: options
+      };
     }
+
+    var layers = getSelectedLayers();
+    if (layers.length === 0) {
+      return [];
+    }
+
+    if (!options.multiple) {
+      layers = [layers[0]];
+    }
+
+    var result = [];
+    forEach(layers, function(layer) {
+      var selected_properties = layer.selectedProperties.slice(),
+        properties = [];
+      forEach(selected_properties, function(selected_property) {
+        if ((options.propertyGroup || isProperty(selected_property)) && options.filter(selected_property)) {
+          properties.push(selected_property);
+        }
+      });
+      if (properties.length > 0) {
+        result.push({
+          layer: layer,
+          properties: properties
+        });
+      }
+    });
 
     return result;
   }
 
-  function getSelectedProperty(with_layer) {
+  function getSelectedProperty() {
+    var layer = getSelectedLayer();
+    if (layer === null) {
+      return null;
+    }
+
+    var properties = layer.selectedProperties.slice(),
+      property = find(properties, function(property) {
+        return isProperty(property);
+      });
+
+    return property;
+  }
+  
+  function getSelectedPropertyWithLayer() {
     var layer = getSelectedLayer();
     if (layer === null) {
       return null;
@@ -1678,17 +1727,13 @@ var KIKAKU = KIKAKU || function(fn) {
       });
 
     if (property === null) {
-      return property;
+      return null;
     }
 
-    if (with_layer) {
-      return {
-        layer: layer,
-        property: property
-      };
-    }
-
-    return property;
+    return {
+      layer: layer,
+      property: property
+    };
   }
 
   function getPathOfProperty(property, type) {
